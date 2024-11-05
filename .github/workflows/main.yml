@@ -1,4 +1,4 @@
-name: Deploy to Hostinger
+name: Deploy Test HTML to Hostinger
 
 on:
   push:
@@ -14,10 +14,10 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Deploy via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.5.0  # Use a specific version for stability
+        uses: SamKirkland/FTP-Deploy-Action@v4.5.0  # Use the latest stable version
         with:
           server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./  # The directory to deploy; adjust as needed
+          local-dir: ./index.html  # Specifies only the index.html file to upload
           server-dir: /public_html  # Target directory on your Hostinger server
