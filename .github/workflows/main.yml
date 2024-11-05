@@ -19,5 +19,5 @@ jobs:
           server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./index.html  # Specifies only the index.html file to upload
+          local-dir: ./  # Specifies only the index.html file to upload
           server-dir: /public_html  # Target directory on your Hostinger server
