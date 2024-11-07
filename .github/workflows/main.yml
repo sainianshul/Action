@@ -3,7 +3,7 @@ name: Deploy Test HTML to Hostinger
 on:
   push:
     branches:
-      - main
+      - main  # Trigger only on pushes to the main branch
 
 jobs:
   deploy:
@@ -13,12 +13,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Deploy via FTP
-        uses: spaction/ftp-upload-action@v1.0.0  # Node 16 compatible
-        with:
-          host: ${{ secrets.FTP_HOST }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          port: 21  # Default FTP port, change if necessary
-          localDir: ./  # Local directory or files to upload
-          remoteDir: /public_html/  # Target directory on the server
+      - name: Upload files via FTP
+        env:
+          FTP_HOST: ${{ secrets.FTP_HOST }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+        run: |
+          # Recursively upload files from the repository root to the server's public_html directory
+          curl -T "{.,}/*" -u $FTP_USERNAME:$FTP_PASSWORD ftp://$FTP_HOST/public_html/ --ftp-create-dirs --ftp-ssl
