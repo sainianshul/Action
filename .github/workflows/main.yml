@@ -13,10 +13,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Upload files via FTP
+      - name: Install lftp
+        run: sudo apt-get install -y lftp
+
+      - name: Upload files to Hostinger via FTP with lftp
         env:
           FTP_HOST: ${{ secrets.FTP_HOST }}
           FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
         run: |
-          find . -type f -exec curl -T {} -u $FTP_USERNAME:$FTP_PASSWORD ftp://$FTP_HOST/public_html/{} --ftp-create-dirs --ftp-ssl \;
+          # Sync the repository to the public_html directory only, deleting outdated files in that folder
+          lftp -e "mirror -R --verbose --only-newer --delete-first ./ /public_html/; quit" -u $FTP_USERNAME,$FTP_PASSWORD $FTP_HOST
