@@ -14,10 +14,11 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Deploy via FTP
-        uses: lukaszbadura/ftp-deploy-action@2.0.0  # Node 16 compatible
+        uses: spaction/ftp-upload-action@v1.0.0  # Node 16 compatible
         with:
-          ftp-server: ${{ secrets.FTP_HOST }}
-          ftp-username: ${{ secrets.FTP_USERNAME }}
-          ftp-password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./  # Local directory or files to upload
-          server-dir: /public_html/  # Target directory on your Hostinger server
+          host: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: 21  # Default FTP port, change if necessary
+          localDir: ./  # Local directory or files to upload
+          remoteDir: /public_html/  # Target directory on the server
