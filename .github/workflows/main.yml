@@ -3,7 +3,7 @@ name: Deploy Test HTML to Hostinger
 on:
   push:
     branches:
-      - main  # Trigger only on pushes to the main branch
+      - main
 
 jobs:
   deploy:
@@ -19,5 +19,4 @@ jobs:
           FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
         run: |
-          # Recursively upload files from the repository root to the server's public_html directory
-          curl -T "{.,}/*" -u $FTP_USERNAME:$FTP_PASSWORD ftp://$FTP_HOST/public_html/ --ftp-create-dirs --ftp-ssl
+          find . -type f -exec curl -T {} -u $FTP_USERNAME:$FTP_PASSWORD ftp://$FTP_HOST/public_html/{} --ftp-create-dirs --ftp-ssl \;
