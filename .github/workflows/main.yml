@@ -3,7 +3,7 @@ name: Deploy Test HTML to Hostinger
 on:
   push:
     branches:
-      - main  # Only trigger on pushes to the main branch
+      - main
 
 jobs:
   deploy:
@@ -14,10 +14,11 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Deploy via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.0  # Updated to a version compatible with Node 16
+        uses: appleboy/ftp-action@v1.1.1  # Node 16 compatible
         with:
-          server: ${{ secrets.FTP_HOST }}
+          host: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./  # Specifies only the index.html file to upload
-          server-dir: /public_html/  # Target directory on your Hostinger server
+          local-dir: ./  # Local directory or files to upload
+          remote-dir: /public_html/  # Target directory on the server
+          protocol: ftp  # Set protocol to ftp
